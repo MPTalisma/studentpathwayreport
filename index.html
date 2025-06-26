@@ -470,40 +470,44 @@
 
             <div class="card recommended-career-card">
                 <h2 class="green-check"><i class="fas fa-check-circle icon"></i> Recommended Career Cluster: Marketing</h2>
-                <table class="career-table">
+                <table id="careerRecommendationTable" class="career-table">
                     <thead>
                         <tr>
                             <th>Cluster</th>
-                            <th>E. Wellness</th>
-                            <th>Social Engage</th>
-                            <th>Motivation</th>
-                            <th>Resilience</th>
-                            <th>Match</th>
+                            <th>Marketing</th>
+                            <th>Finance</th>
+                            <th>Education & Training</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Marketing</td>
+                            <th>E. Wellness</th>
                             <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                        </tr>
+                        <tr>
+                            <th>Social Engage</th>
+                            <td><span class="match-icon check">✔</span> 4</td>
+                            <td><span class="match-icon times">✖</span> 2</td>
+                            <td><span class="match-icon check">✔</span> 4</td>
+                        </tr>
+                        <tr>
+                            <th>Motivation</th>
                             <td><span class="match-icon check">✔</span> 4</td>
                             <td><span class="match-icon check">✔</span> 4</td>
                             <td><span class="match-icon check">✔</span> 3</td>
+                        </tr>
+                        <tr>
+                            <th>Resilience</th>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon times">✖</span> 2</td>
+                        </tr>
+                        <tr>
+                            <th>Match</th>
                             <td class="match-perfect">Perfect</td>
-                        </tr>
-                        <tr>
-                            <td>Finance</td>
-                            <td><span class="match-icon check">✔</span> 3</td>
-                            <td><span class="match-icon times">✖</span> 2</td>
-                            <td><span class="match-icon check">✔</span> 4</td>
-                            <td><span class="match-icon check">✔</span> 3</td>
                             <td class="match-good">Good</td>
-                        </tr>
-                        <tr>
-                            <td>Education & Training</td>
-                            <td><span class="match-icon check">✔</span> 3</td>
-                            <td><span class="match-icon check">✔</span> 4</td>
-                            <td><span class="match-icon check">✔</span> 3</td>
-                            <td><span class="match-icon times">✖</span> 2</td>
                             <td class="match-moderate">Moderate</td>
                         </tr>
                     </tbody>
@@ -566,27 +570,30 @@
             </div>
         </section>
 
-    </div> <script>
+    </div> 
+    <script>
+        // Helper function to get CSS variable values
+        function getCssVariable(variableName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+        }
+
+        // Define colors using the helper function
+        const primaryPurpleDark = getCssVariable('--primary-purple-dark');
+        const primaryPurpleLight = getCssVariable('--primary-purple-light');
+        const textDark = getCssVariable('--text-dark');
+        const textMedium = getCssVariable('--text-medium');
+        const textLight = getCssVariable('--text-light');
+        const borderColor = getCssVariable('--border-color');
+
+        const pieDigitalMarketing = getCssVariable('--pie-digital-marketing');
+        const pieBrandContent = getCssVariable('--pie-brand-content');
+        const pieSocialMedia = getCssVariable('--pie-social-media');
+        const pieTraditionalAd = getCssVariable('--pie-traditional-ad');
+        const pieOthers = getCssVariable('--pie-others');
+
+        // Removed the flipTable() function and its call as the table is now hardcoded in the flipped state.
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Helper function to get CSS variable values
-            function getCssVariable(variableName) {
-                return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
-            }
-
-            // Define colors using the helper function
-            const primaryPurpleDark = getCssVariable('--primary-purple-dark');
-            const primaryPurpleLight = getCssVariable('--primary-purple-light');
-            const textDark = getCssVariable('--text-dark');
-            const textMedium = getCssVariable('--text-medium');
-            const textLight = getCssVariable('--text-light');
-            const borderColor = getCssVariable('--border-color');
-
-            const pieDigitalMarketing = getCssVariable('--pie-digital-marketing');
-            const pieBrandContent = getCssVariable('--pie-brand-content');
-            const pieSocialMedia = getCssVariable('--pie-social-media');
-            const pieTraditionalAd = getCssVariable('--pie-traditional-ad');
-            const pieOthers = getCssVariable('--pie-others');
-
             // --- Behavioral Profile Radar Chart (Integrated from student_pathway_report_full.html) ---
             const behavioralRadarCtx = document.getElementById('behavioralRadarChart').getContext('2d');
             new Chart(behavioralRadarCtx, {
@@ -671,18 +678,6 @@
                                 display: false
                             }
                         }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + context.raw + ' LPA';
-                                }
-                            }
-                        }
                     }
                 }
             });
@@ -731,7 +726,6 @@
                     }
                 }
             });
-            // Add the setTimeout for resizing, as it was present in student_pathway_report_full.html
             setTimeout(() => {
                 window.dispatchEvent(new Event('resize'));
             }, 100);
@@ -739,4 +733,3 @@
     </script>
 </body>
 </html>
-```
