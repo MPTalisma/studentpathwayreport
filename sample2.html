@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +45,6 @@
             /* Additional colors from student_pathway_report_full.html timeline dots */
             --dot-orange: #f7a070;
             --dot-blue: #83a6ed;
-            /* Added for consistency with student_pathway_report_full.html timeline dots */
             --dot-purple: #4A0E7A; 
         }
 
@@ -347,7 +347,6 @@
         /* Specific timeline dot colors from student_pathway_report_full.html */
         .timeline-step-circle.dot-orange { background-color: var(--dot-orange); }
         .timeline-step-circle.dot-blue { background-color: var(--dot-blue); }
-        /* Added for consistency with student_pathway_report_full.html timeline dots */
         .timeline-step-circle.dot-purple { background-color: var(--dot-purple); }
 
 
@@ -377,8 +376,8 @@
         }
         .radar-chart-wrapper canvas {
             display: block;
-            width: 100% !important;
-            height: auto !important; /* Changed from height: 100% to auto to better match student_pathway_report_full.html behavior */
+            width: 600px !important; /* Explicit width from student_pathway_report_full.html canvas */
+            height: 600px !important; /* Explicit height from student_pathway_report_full.html canvas */
         }
     </style>
 </head>
@@ -601,6 +600,7 @@
                         pointBackgroundColor: primaryPurpleDark,
                         pointBorderColor: '#fff',
                         borderWidth: 2
+                        // Removed fill: true and tension: 0.2, reverting to original student_pathway_report_full.html settings
                     }]
                 },
                 options: {
@@ -731,7 +731,6 @@
                     }
                 }
             });
-            // Add the setTimeout for resizing, as it was present in student_pathway_report_full.html
             setTimeout(() => {
                 window.dispatchEvent(new Event('resize'));
             }, 100);
