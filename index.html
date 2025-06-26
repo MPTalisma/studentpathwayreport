@@ -1,225 +1,736 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Student Pathway Report</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom, #e3a8ff, #fdb8d1);
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Pathway Report</title>
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@2.0.0/dist/chartjs-plugin-doughnutlabel.min.js"></script>
 
-    h1, h2 {
-      text-align: center;
-    }
 
-    .section {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      padding: 20px;
-      margin-bottom: 30px;
-    }
+    <style>
+        :root {
+            --primary-purple-dark: #4A0E7A;
+            --primary-purple-light: #D3BFF5;
+            --secondary-pink-dark: #f47ad3;
+            --secondary-pink-light: #fdb8d1;
+            --light-purple-gradient-start: #e3a8ff;
+            --light-pink-gradient-end: #fdb8d1;
+            --card-background: #FFFFFF;
+            --text-dark: #333333;
+            --text-medium: #666666;
+            --text-light: #AAAAAA;
+            --border-color: #EEEEEE;
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-medium: rgba(0, 0, 0, 0.1);
 
-    .flex {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+            /* Match specific colors from infographic */
+            --marketing-progress: #A070F7; /* Purple-ish */
+            --finance-progress: #FFC0CB; /* Light Pink */
+            --education-progress: #87CEEB; /* Light Blue */
 
-    .box {
-      flex: 1;
-      min-width: 280px;
-    }
+            /* Pie chart colors */
+            --pie-digital-marketing: #FF69B4; /* Hot Pink */
+            --pie-brand-content: #FFD700; /* Gold */
+            --pie-social-media: #6A5ACD; /* Slate Blue */
+            --pie-traditional-ad: #4682B4; /* Steel Blue */
+            --pie-others: #D3D3D3; /* Light Gray */
 
-    .career-list li {
-      margin: 8px 0;
-    }
+            /* Match colors for table status */
+            --status-perfect: #32CD32; /* Lime Green */
+            --status-good: #FFD700; /* Gold */
+            --status-moderate: #FF6347; /* Tomato Red */
+        }
 
-    .bar-chart {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      height: 200px;
-      margin-top: 20px;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, var(--light-purple-gradient-start), var(--light-pink-gradient-end));
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-    .bar {
-      width: 80px;
-      text-align: center;
-      background: #a070f7;
-      color: #fff;
-      border-radius: 6px 6px 0 0;
-    }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: var(--card-background);
+            border-radius: 20px; /* More rounded corners */
+            box-shadow: 0 15px 40px var(--shadow-medium); /* Stronger shadow */
+            padding: 30px;
+            box-sizing: border-box;
+        }
 
-    .timeline {
-      position: relative;
-      padding-left: 40px;
-    }
+        .report-header {
+            background-color: var(--primary-purple-light);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 35px;
+            text-align: center;
+            box-shadow: 0 8px 20px var(--shadow-light);
+            position: relative; /* For the purple element in header */
+            overflow: hidden;
+        }
 
-    .timeline::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 20px;
-      width: 2px;
-      height: 100%;
-      background: #999;
-    }
+        .report-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="80" r="15" fill="%23FFFFFF50"/><circle cx="80" cy="20" r="10" fill="%23FFFFFF40"/><circle cx="50" cy="50" r="20" fill="%23FFFFFF30"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
 
-    .timeline-step {
-      margin-bottom: 20px;
-      position: relative;
-    }
+        .report-header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            color: var(--primary-purple-dark);
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .report-header p {
+            font-size: 1em;
+            color: var(--text-medium);
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .report-header p strong {
+            font-weight: 700;
+            color: var(--primary-purple-dark);
+        }
 
-    .timeline-step::before {
-      content: '';
-      position: absolute;
-      left: -28px;
-      top: 5px;
-      width: 12px;
-      height: 12px;
-      background: #f47ad3;
-      border-radius: 50%;
-    }
+        .section-grid {
+            display: grid;
+            gap: 25px; /* Increased gap */
+            grid-template-columns: 1fr; /* Default to single column on small screens */
+            margin-bottom: 30px;
+        }
 
-    .pie-chart ul {
-      list-style: none;
-      padding-left: 0;
-    }
+        @media (min-width: 768px) {
+            .section-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+            }
+        }
 
-    .pie-chart li::before {
-      content: '●';
-      margin-right: 8px;
-    }
+        .card {
+            background: var(--card-background);
+            border-radius: 15px; /* Slightly less rounded than container */
+            box-shadow: 0 8px 25px var(--shadow-light); /* Refined shadow */
+            padding: 25px;
+            position: relative;
+            overflow: hidden; /* For inner elements like radar chart */
+        }
 
-    .legend-perfect { color: green; font-weight: bold; }
-    .legend-good { color: orange; font-weight: bold; }
-    .legend-moderate { color: red; font-weight: bold; }
-  </style>
+        .card h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary-purple-dark);
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .icon {
+            color: var(--primary-purple-dark);
+            font-size: 1.2em;
+        }
+        .card h2.green-check .icon {
+            color: #28a745; /* Green checkmark */
+        }
+
+        /* Career Interest Clusters */
+        .interest-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1em;
+            color: var(--text-dark);
+        }
+        .interest-item .icon {
+            font-size: 1.1em;
+            margin-right: 10px;
+            color: var(--primary-purple-dark); /* Default icon color */
+        }
+        .interest-item .label {
+            flex-grow: 1;
+            font-weight: 500;
+        }
+        .interest-item .score {
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            background-color: var(--marketing-progress); /* Default */
+        }
+        .progress-education .progress-bar { background-color: var(--education-progress); }
+        .progress-finance .progress-bar { background-color: var(--finance-progress); }
+        .progress-marketing .progress-bar { background-color: var(--marketing-progress); }
+
+        /* Behavioral Traits (Custom Sliders) */
+        .trait-slider-container {
+            margin-bottom: 20px;
+        }
+        .trait-slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+        .trait-slider-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .trait-slider-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-purple-light), var(--secondary-pink-dark));
+            border-radius: 4px;
+        }
+        .trait-slider-indicator {
+            position: absolute;
+            height: 16px;
+            width: 2px;
+            background-color: var(--primary-purple-dark);
+            top: -4px;
+            transform: translateX(-50%);
+        }
+        .trait-slider-score {
+            position: absolute;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: var(--primary-purple-dark);
+            top: -20px;
+            transform: translateX(-50%);
+        }
+
+        /* Recommended Career Table */
+        .career-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+        .career-table th, .career-table td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .career-table th {
+            background-color: var(--primary-purple-light);
+            color: var(--primary-purple-dark);
+            font-weight: 600;
+        }
+        .career-table td {
+            color: var(--text-dark);
+        }
+        .career-table .match-perfect { color: var(--status-perfect); font-weight: 600; }
+        .career-table .match-good { color: var(--status-good); font-weight: 600; }
+        .career-table .match-moderate { color: var(--status-moderate); font-weight: 600; }
+        .match-icon {
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+        .match-icon.check { color: #28a745; }
+        .match-icon.times { color: #dc3545; }
+
+
+        /* Career Options Bar Chart */
+        .bar-chart-container {
+            height: 300px; /* Set a height for Chart.js canvas */
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Growth Outlook Pie Chart */
+        .pie-chart-container {
+            height: 250px; /* Set a height for Chart.js canvas */
+            width: 100%;
+            margin-bottom: 20px; /* Space between chart and legend */
+        }
+        .pie-chart-legend {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9em;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            justify-content: center;
+        }
+        .pie-chart-legend li {
+            display: flex;
+            align-items: center;
+            color: var(--text-dark);
+        }
+        .pie-chart-legend li .color-box {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Development Roadmap Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10px; /* Aligns with circle centers */
+            width: 2px;
+            height: 100%;
+            background: var(--border-color);
+            z-index: 0;
+        }
+        .timeline-step {
+            position: relative;
+            margin-bottom: 25px; /* Space between steps */
+            padding-left: 25px; /* Space for circle */
+        }
+        .timeline-step:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-step-circle {
+            position: absolute;
+            left: 0;
+            top: 0; /* Aligns with text top */
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-purple-dark); /* Default circle color */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8em;
+            color: white;
+            font-weight: 600;
+            z-index: 1; /* Above the line */
+        }
+        .timeline-step-content {
+            font-size: 1em;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .timeline-step-content strong {
+            font-weight: 700;
+            color: var(--primary-purple-dark);
+        }
+
+        /* Specific styling for the radar chart canvas (no background, only grid lines) */
+        .behavioral-profile-card canvas {
+            background: transparent !important; /* Ensure no white background for radar */
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>📋 Student Pathway Report</h1>
-    <p style="text-align:center;">Student Name: <strong>Nithya</strong> | Grade: 10 | Date: 25/06/2025</p>
+    <div class="container">
+        <header class="report-header">
+            <h1>Student Pathway Report: Personalized Career Recommendation</h1>
+            <p>Student Name: <strong>Nithya</strong> | Grade: 10 | Date: 25/06/2025</p>
+        </header>
 
-    <div class="section flex">
-      <div class="box">
-        <h2>Top 3 Career Interest Clusters</h2>
-        <ul>
-          <li>🎓 Education & Training – 8/10</li>
-          <li>💰 Finance – 9/10</li>
-          <li>📢 Marketing – 10/10</li>
-        </ul>
-        <p><strong>Interpretation:</strong> Marketing emerges as the most preferred cluster based on student responses.</p>
-      </div>
-      <div class="box">
-        <h2>Behavioral Traits</h2>
-        <ul>
-          <li>Motivation: 4</li>
-          <li>Resilience: 3</li>
-          <li>Social Engagement: 4</li>
-          <li>Emotional Wellness: 3</li>
-        </ul>
-      </div>
-    </div>
+        <section class="section-grid">
+            <div class="card career-interest-card">
+                <h2><i class="fas fa-search icon"></i> Top 3 Career Interest Clusters</h2>
+                <div class="interest-item">
+                    <span class="icon">🎓</span>
+                    <span class="label">Education & Training</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar progress-education" style="width: 80%;"></div>
+                    </div>
+                    <span class="score">8/10</span>
+                </div>
+                <div class="interest-item">
+                    <span class="icon">💰</span>
+                    <span class="label">Finance</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar progress-finance" style="width: 90%;"></div>
+                    </div>
+                    <span class="score">9/10</span>
+                </div>
+                <div class="interest-item">
+                    <span class="icon">📢</span>
+                    <span class="label">Marketing</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar progress-marketing" style="width: 100%;"></div>
+                    </div>
+                    <span class="score">10/10</span>
+                </div>
+                <p style="font-size:0.9em; color:var(--text-medium); margin-top:20px;">
+                    <strong style="color:var(--primary-purple-dark);">Interpretation:</strong> Marketing emerges as the most preferred cluster based on student responses.
+                </p>
+            </div>
 
-    <div class="section flex">
-      <div class="box">
-        <h2>Behavioral Profile Summary (STP Scores)</h2>
-        <p>All scores on a scale of 1–5</p>
-        <ul>
-          <li>Emotional Wellness: 3</li>
-          <li>Social Engagement: 4</li>
-          <li>Motivation: 4</li>
-          <li>Resilience: 3</li>
-        </ul>
-      </div>
-      <div class="box">
-        <h2>✅ Recommended Career Cluster: Marketing</h2>
-        <table border="1" cellpadding="6" style="border-collapse: collapse; width: 100%;">
-          <tr>
-            <th>Cluster</th>
-            <th>E. Wellness</th>
-            <th>Social Engage</th>
-            <th>Motivation</th>
-            <th>Resilience</th>
-            <th>Match</th>
-          </tr>
-          <tr>
-            <td>Marketing</td>
-            <td>✔ 3</td>
-            <td>✔ 4</td>
-            <td>✔ 4</td>
-            <td>✔ 3</td>
-            <td class="legend-perfect">Perfect</td>
-          </tr>
-          <tr>
-            <td>Finance</td>
-            <td>✔ 3</td>
-            <td>✖ 2</td>
-            <td>✔ 4</td>
-            <td>✔ 3</td>
-            <td class="legend-good">Good</td>
-          </tr>
-          <tr>
-            <td>Education & Training</td>
-            <td>✔ 3</td>
-            <td>✔ 4</td>
-            <td>✔ 3</td>
-            <td>✖ 2</td>
-            <td class="legend-moderate">Moderate</td>
-          </tr>
-        </table>
-      </div>
-    </div>
+            <div class="card behavioral-traits-card">
+                <h2><i class="fas fa-brain icon"></i> Behavioral Traits</h2>
+                <div class="trait-slider-container">
+                    <div class="trait-slider-label"><span>Motivation</span> <span>(4)</span></div>
+                    <div class="trait-slider-bar">
+                        <div class="trait-slider-fill" style="width: 80%;"></div>
+                        <div class="trait-slider-indicator" style="left: 80%;"></div>
+                        <div class="trait-slider-score" style="left: 80%;">4</div>
+                    </div>
+                </div>
+                <div class="trait-slider-container">
+                    <div class="trait-slider-label"><span>Resilience</span> <span>(3)</span></div>
+                    <div class="trait-slider-bar">
+                        <div class="trait-slider-fill" style="width: 60%;"></div>
+                        <div class="trait-slider-indicator" style="left: 60%;"></div>
+                        <div class="trait-slider-score" style="left: 60%;">3</div>
+                    </div>
+                </div>
+                <div class="trait-slider-container">
+                    <div class="trait-slider-label"><span>Social Engagement</span> <span>(4)</span></div>
+                    <div class="trait-slider-bar">
+                        <div class="trait-slider-fill" style="width: 80%;"></div>
+                        <div class="trait-slider-indicator" style="left: 80%;"></div>
+                        <div class="trait-slider-score" style="left: 80%;">4</div>
+                    </div>
+                </div>
+                <div class="trait-slider-container">
+                    <div class="trait-slider-label"><span>Emotional Wellness</span> <span>(3)</span></div>
+                    <div class="trait-slider-bar">
+                        <div class="trait-slider-fill" style="width: 60%;"></div>
+                        <div class="trait-slider-indicator" style="left: 60%;"></div>
+                        <div class="trait-slider-score" style="left: 60%;">3</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <div class="section">
-      <h2>📌 Career Options in Marketing</h2>
-      <div class="bar-chart">
-        <div class="bar" style="height: 120px;">Marketing Executive<br>3 LPA</div>
-        <div class="bar" style="height: 180px;">Digital Analyst<br>5 LPA</div>
-        <div class="bar" style="height: 180px;">Content Creator<br>5 LPA</div>
-        <div class="bar" style="height: 240px;">Brand Manager<br>7.5 LPA</div>
-        <div class="bar" style="height: 300px;">Product Manager<br>9.5 LPA</div>
-      </div>
-    </div>
+        <section class="section-grid">
+            <div class="card behavioral-profile-card">
+                <h2><i class="fas fa-chart-line icon"></i> Behavioral Profile Summary (STP Scores)</h2>
+                <div style="height: 280px;"> <canvas id="behavioralRadarChart"></canvas>
+                </div>
+            </div>
 
-    <div class="section flex">
-      <div class="box pie-chart">
-        <h2>📈 Growth Outlook for Marketing Careers</h2>
-        <ul>
-          <li style="color: #ff3366;">Digital Marketing – 40%</li>
-          <li style="color: #ffcc00;">Brand & Content Strategy – 25%</li>
-          <li style="color: #00cc99;">Social Media & Influencers – 20%</li>
-          <li style="color: #00ccff;">Traditional Advertising – 10%</li>
-          <li style="color: #999999;">Others – 5%</li>
-        </ul>
-      </div>
-      <div class="box">
-        <h2>🗺️ Development Roadmap</h2>
-        <div class="timeline">
-          <div class="timeline-step">Start in 10th Grade</div>
-          <div class="timeline-step">Choose Commerce or Arts Stream</div>
-          <div class="timeline-step">Learn Digital Tools & Build Portfolio</div>
-          <div class="timeline-step">Certifications (Google, HubSpot, etc.)</div>
-          <div class="timeline-step">Internship in Marketing/Digital Agency</div>
-          <div class="timeline-step">BA/BBA in Marketing | Entry Jobs</div>
-        </div>
-      </div>
-    </div>
+            <div class="card recommended-career-card">
+                <h2 class="green-check"><i class="fas fa-check-circle icon"></i> Recommended Career Cluster: Marketing</h2>
+                <table class="career-table">
+                    <thead>
+                        <tr>
+                            <th>Cluster</th>
+                            <th>E. Wellness</th>
+                            <th>Social Engage</th>
+                            <th>Motivation</th>
+                            <th>Resilience</th>
+                            <th>Match</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Marketing</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon check">✔</span> 4</td>
+                            <td><span class="match-icon check">✔</span> 4</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td class="match-perfect">Perfect</td>
+                        </tr>
+                        <tr>
+                            <td>Finance</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon times">✖</span> 2</td>
+                            <td><span class="match-icon check">✔</span> 4</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td class="match-good">Good</td>
+                        </tr>
+                        <tr>
+                            <td>Education & Training</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon check">✔</span> 4</td>
+                            <td><span class="match-icon check">✔</span> 3</td>
+                            <td><span class="match-icon times">✖</span> 2</td>
+                            <td class="match-moderate">Moderate</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.85em; color:var(--text-medium); margin-top:20px;">
+                    <strong>Legend:</strong> Meets | <span style="color:var(--status-moderate);">X = Below Ideal</span>
+                </p>
+            </div>
+        </section>
 
-  </div>
+        <section class="card career-options-card">
+            <h2><i class="fas fa-map-marker-alt icon"></i> Career Options in Marketing</h2>
+            <div class="bar-chart-container">
+                <canvas id="careerOptionsBarChart"></canvas>
+            </div>
+        </section>
+
+        <section class="section-grid">
+            <div class="card growth-outlook-card">
+                <h2><i class="fas fa-chart-pie icon"></i> Growth Outlook for Marketing Careers in India</h2>
+                <div class="pie-chart-container">
+                    <canvas id="growthOutlookPieChart"></canvas>
+                </div>
+                <ul class="pie-chart-legend">
+                    <li><span class="color-box" style="background-color: var(--pie-digital-marketing);"></span> Digital Marketing: 40%</li>
+                    <li><span class="color-box" style="background-color: var(--pie-brand-content);"></span> Brand & Content Strategy: 25%</li>
+                    <li><span class="color-box" style="background-color: var(--pie-social-media);"></span> Social Media & Influencers: 20%</li>
+                    <li><span class="color-box" style="background-color: var(--pie-traditional-ad);"></span> Traditional Advertising: 10%</li>
+                    <li><span class="color-box" style="background-color: var(--pie-others);"></span> Others: 5%</li>
+                </ul>
+            </div>
+
+            <div class="card development-roadmap-card">
+                <h2><i class="fas fa-road icon"></i> Development Roadmap</h2>
+                <p style="font-weight: 600; color: var(--primary-purple-dark); margin-bottom: 15px;">Start your journey</p>
+                <div class="timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-step-circle" style="background-color: #f7a070;"></div> <div class="timeline-step-content"><strong>10th Grade</strong></div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-circle"></div>
+                        <div class="timeline-step-content">Choose Commerce or Arts Stream</div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-circle"></div>
+                        <div class="timeline-step-content">Learn Digital Tools & Build Portfolio</div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-circle"></div>
+                        <div class="timeline-step-content">Certifications (Google, HubSpot, etc.)</div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-circle"></div>
+                        <div class="timeline-step-content">Internship in Marketing/Digital Agency</div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-circle" style="background-color: #83a6ed;"></div> <div class="timeline-step-content">BA/BBA in Marketing | Entry Jobs</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Register Chart.js plugins (if needed)
+            // Chart.register(ChartDataLabels); // Example if you want data labels on charts
+
+            // --- Behavioral Profile Radar Chart ---
+            const behavioralRadarCtx = document.getElementById('behavioralRadarChart').getContext('2d');
+            new Chart(behavioralRadarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Emotional Wellness', 'Social Engagement', 'Motivation', 'Resilience'],
+                    datasets: [{
+                        label: 'STP Scores (1-5)',
+                        data: [3, 4, 4, 3], // Your scores
+                        backgroundColor: 'rgba(160, 112, 247, 0.4)', // Light purple fill
+                        borderColor: 'rgba(160, 112, 247, 1)', // Darker purple line
+                        pointBackgroundColor: 'rgba(160, 112, 247, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(160, 112, 247, 1)',
+                        borderWidth: 2,
+                        tension: 0.2 // Smoothness of the line
+                    },
+                    {
+                        label: 'Ideal Score',
+                        data: [5, 5, 5, 5], // Example ideal score (max of 5)
+                        backgroundColor: 'rgba(255, 99, 132, 0.0)', // Transparent
+                        borderColor: 'rgba(100, 100, 100, 0.2)', // Light gray border for background shape
+                        pointBackgroundColor: 'transparent',
+                        pointBorderColor: 'transparent',
+                        pointHoverBackgroundColor: 'transparent',
+                        pointHoverBorderColor: 'transparent',
+                        borderWidth: 1,
+                        borderDash: [5, 5], // Dashed line for ideal
+                        fill: false
+                    }
+                ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)' // Light grey lines for radar
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)' // Light grey grid lines
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                },
+                                color: 'var(--text-dark)'
+                            },
+                            ticks: {
+                                display: true, // Hide numerical ticks
+                                beginAtZero: true,
+                                max: 5,
+                                stepSize: 1,
+                                backdropColor: 'transparent', // Make ticks transparent
+                                font: {
+                                    size: 10,
+                                    weight: '500'
+                                },
+                                color: 'var(--text-light)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hide legend
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- Career Options Bar Chart ---
+            const careerOptionsCtx = document.getElementById('careerOptionsBarChart').getContext('2d');
+            new Chart(careerOptionsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Marketing Executive', 'Digital Marketing Analyst', 'Content Creator', 'Brand Manager', 'Product Marketing Manager'],
+                    datasets: [{
+                        label: 'Starting Salary (LPA)',
+                        data: [3, 5, 5, 7.5, 9.5], // Your salary data
+                        backgroundColor: 'var(--primary-purple-dark)', // Solid bar color
+                        borderRadius: 6, // Rounded corners for bars
+                        barThickness: 50, // Fixed width for bars
+                        categoryPercentage: 0.7, // Space between categories
+                        barPercentage: 0.9 // Space between bars in same category
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'x', // Horizontal bars if needed, but x is fine for this
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10, // Max salary on Y-axis
+                            ticks: {
+                                stepSize: 1,
+                                color: 'var(--text-medium)'
+                            },
+                            grid: {
+                                color: 'var(--border-color)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'var(--text-dark)',
+                                font: {
+                                    weight: '600'
+                                }
+                            },
+                            grid: {
+                                display: false // Hide X-axis grid lines
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + ' LPA';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- Growth Outlook Pie Chart ---
+            const growthOutlookCtx = document.getElementById('growthOutlookPieChart').getContext('2d');
+            new Chart(growthOutlookCtx, {
+                type: 'doughnut', // Changed to doughnut for inner circle effect
+                data: {
+                    labels: ['Digital Marketing', 'Brand & Content Strategy', 'Social Media & Influencers', 'Traditional Advertising', 'Others'],
+                    datasets: [{
+                        data: [40, 25, 20, 10, 5], // Your percentages
+                        backgroundColor: [
+                            'var(--pie-digital-marketing)',
+                            'var(--pie-brand-content)',
+                            'var(--pie-social-media)',
+                            'var(--pie-traditional-ad)',
+                            'var(--pie-others)'
+                        ],
+                        borderColor: 'var(--card-background)', // Border color to match card background
+                        borderWidth: 4, // Make slices slightly separate
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%', // Create doughnut hole
+                    plugins: {
+                        legend: {
+                            display: false // We will create a custom legend in HTML
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
